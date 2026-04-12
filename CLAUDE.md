@@ -12,9 +12,10 @@
 ## Cross-Repo Rules
 
 - **Reference but not update.** When working in this repo, you can READ from other CAPTAIN repos via captain.config.json. Never WRITE to another repo from a session focused here.
-- **Branch strategy:** `main` stays synced with upstream via rebase. All CAPTAIN customizations go on the `captain` branch.
+- **Branch strategy:** `master` stays synced with upstream via rebase. All CAPTAIN customizations go on the `captain` branch.
+- **After fresh clone:** Run `bash ~/Projects/captain-plugin/hooks/bootstrap.sh` to restore hookify symlinks.
 
 ## Upstream Tracking
 
 - **Upstream:** https://github.com/JCodesMore/ai-website-cloner-template.git
-- **Sync:** `git fetch upstream && git checkout main && git rebase upstream/main && git checkout captain && git rebase main`
+- **Sync:** `git fetch upstream && git checkout master && git rebase upstream/master && git checkout captain && git rebase master`
