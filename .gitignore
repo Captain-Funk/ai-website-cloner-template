@@ -47,3 +47,8 @@ next-env.d.ts
 
 # Local temp files
 temp/
+
+# Secrets (audit standard — Phase 9 BRG-269)
+.mcp.json
+*.secret*
+credentials.json
