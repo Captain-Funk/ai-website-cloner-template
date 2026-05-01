@@ -69,6 +69,33 @@ Point it at a URL, run `/clone-website`, and your AI agent will inspect the site
 
 ## How It Works
 
+```mermaid
+flowchart TD
+    URL[Target URL] --> RECON[1 — Reconnaissance<br/>screenshots · design tokens<br/>interaction sweep]
+    RECON --> FOUND[2 — Foundation<br/>fonts · colors · globals<br/>asset download]
+    FOUND --> SPECS[3 — Component Specs<br/>computed CSS · states<br/>behaviors · content]
+
+    SPECS --> WT1[Worktree A<br/>builder agent]
+    SPECS --> WT2[Worktree B<br/>builder agent]
+    SPECS --> WTN[Worktree N<br/>builder agent]
+
+    WT1 --> ASSEMBLY[5 — Assembly &amp; QA<br/>merge worktrees · wire page<br/>visual diff vs original]
+    WT2 --> ASSEMBLY
+    WTN --> ASSEMBLY
+
+    ASSEMBLY --> OUT[Cloned Next.js site]
+
+    style URL fill:#94a3b8,color:#000
+    style RECON fill:#0E7A6E,color:#fff
+    style FOUND fill:#0E7A6E,color:#fff
+    style SPECS fill:#B943DD,color:#fff
+    style WT1 fill:#F59E0B,color:#000
+    style WT2 fill:#F59E0B,color:#000
+    style WTN fill:#F59E0B,color:#000
+    style ASSEMBLY fill:#0E7A6E,color:#fff
+    style OUT fill:#059669,color:#fff
+```
+
 The `/clone-website` skill runs a multi-phase pipeline:
 
 1. **Reconnaissance** — screenshots, design token extraction, interaction sweep (scroll, click, hover, responsive)
@@ -78,6 +105,33 @@ The `/clone-website` skill runs a multi-phase pipeline:
 5. **Assembly & QA** — merges worktrees, wires up the page, runs visual diff against the original
 
 Each builder agent receives the full component specification inline — exact `getComputedStyle()` values, interaction models, multi-state content, responsive breakpoints, and asset paths. No guessing.
+
+### Component Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Discovered: detected during recon
+
+    Discovered --> Specced: extract computed CSS<br/>capture states + behaviors
+
+    Specced --> Building: builder agent dispatched<br/>in dedicated worktree
+
+    Building --> BuiltLocal: component renders<br/>matches spec
+
+    BuiltLocal --> QAFailed: visual diff > tolerance
+    BuiltLocal --> QAPassed: visual diff within tolerance
+
+    QAFailed --> Building: spec refined or<br/>asset re-extracted
+
+    QAPassed --> Merged: worktree → main page
+
+    Merged --> [*]: shipped in cloned site
+
+    note right of Specced: all values are observed<br/>not inferred
+    note right of Building: parallel — many components<br/>build at once
+```
+
+Each component flows independently through these states. The QA loop catches mismatches early; failed components are respec'd or re-extracted before re-building.
 
 ## Use Cases
 
