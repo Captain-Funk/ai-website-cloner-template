@@ -52,3 +52,6 @@ temp/
 .mcp.json
 *.secret*
 credentials.json
+
+# CAPTAIN bootstrap audit log (regenerated each run)
+.claude/bootstrap-audit.log
