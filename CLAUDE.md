@@ -16,13 +16,13 @@ Clones any website into a clean, modern Next.js codebase using AI coding agents.
 ## Cross-Repo Rules
 
 - **Reference but not update.** When working in this repo, you can READ from other CAPTAIN repos via captain.config.json. Never WRITE to another repo from a session focused here.
-- **Branch strategy:** `master` stays synced with upstream via rebase. All CAPTAIN customizations go on the `captain` branch.
+- **Branch strategy:** `master` stays synced with upstream via rebase. All CAPTAIN customizations live on `main` (default branch). The legacy `captain` branch was renamed to `main` per BRG-261.
 - **After fresh clone:** Run `bash ~/Projects/captain-plugin/hooks/bootstrap.sh` to restore hookify symlinks.
 
 ## Upstream Tracking
 
 - **Upstream:** https://github.com/JCodesMore/ai-website-cloner-template.git
-- **Sync:** `git fetch upstream && git checkout master && git rebase upstream/master && git checkout captain && git rebase master`
+- **Sync:** `git fetch upstream && git checkout master && git rebase upstream/master && git checkout main && git rebase master`
 
 ## Stack & Conventions
 
@@ -43,11 +43,11 @@ Clones any website into a clean, modern Next.js codebase using AI coding agents.
 
 ## Gotchas
 
-- **Don't commit on `master`.** Master mirrors upstream and gets rebased. CAPTAIN-specific work belongs on `captain`.
+- **Don't commit on `master`.** Master mirrors upstream and gets rebased. CAPTAIN-specific work belongs on `main`.
 - **`.claude/` is bootstrap output.** Symlinks regenerate via `bootstrap.sh`. Don't hand-edit hookify rules here — edit them in the captain-plugin or Dillons Project source-of-truth.
-- **Rebases on `captain` will rewrite history.** Force-pushes are expected after upstream syncs; don't share long-lived branches off `captain`.
+- **Rebases on `main` will rewrite history.** Force-pushes are expected after upstream syncs; don't share long-lived branches off `main`.
 - **`bootstrap-audit.log` is gitignored.** It's regenerated each bootstrap run.
-- **Default branch is `captain`** (renamed from upstream's `main`/`master`). GitHub PRs target `captain`, not `main`.
+- **Default branch is `main`** (renamed from `captain` per BRG-261, 2026-04-30). The upstream template uses `master`; we maintain CAPTAIN customizations on `main`.
 
 ## When Working Here
 
